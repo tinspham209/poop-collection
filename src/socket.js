@@ -83,8 +83,12 @@ module.exports = (server) => {
 	io.on("connection", (socket) => {
 		console.log("Connected clients: ", Object.keys(clients).length);
 		clients[socket.id] = true;
+		const lastCollected = Date.now();
 		socket.emit("game-state", gameState);
 		socket.on("poop-collected", ({ id }) => {
+			if (Date.now() - lastCollected < 1000) {
+				return;
+			}
 			const poopIndex = gameState.poops.findIndex((poop) => poop.id === id);
 			if (poopIndex !== -1) {
 				gameState.poops[poopIndex].location = getRandomLocation();

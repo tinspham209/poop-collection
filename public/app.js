@@ -17,10 +17,6 @@ function collectPoop(poop) {
 		socket.emit("poop-collected", {
 			id: poop.id,
 		});
-		if (poopsById[poop.id]) {
-			poopsById[poop.id].remove();
-			delete poopsById[poop.id];
-		}
 	};
 }
 
