@@ -22,14 +22,17 @@ body {
 
 .emoji {
 	display: inline-block;
+
 	font-family: FirefoxEmoji !important;
-	font-size: 10vmin;
 	text-shadow: 2px 2px black;
+
 	transform: translate(-50%, 50%);
+
+	position: fixed;
 }
 
 .animal {
-	font-size: 10vmin;
+	font-size: 13vmin;
 }
 
 .poop {
