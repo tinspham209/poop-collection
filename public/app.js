@@ -12,11 +12,22 @@ const scoreElement = document.querySelector(".score .value");
 const animalsById = {};
 const poopsById = {};
 
+function removePoop(poop) {
+	poop.classList.add("shrink");
+	poop.addEventListener("animationend", () => {
+		poop.remove();
+	});
+}
+
 function collectPoop(poop) {
 	return () => {
 		socket.emit("poop-collected", {
 			id: poop.id,
 		});
+		if (poopsById[poop.id]) {
+			removePoop(poopsById[poop.id]);
+			delete poopsById[poop.id];
+		}
 	};
 }
 
