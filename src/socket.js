@@ -85,13 +85,12 @@ module.exports = (server) => {
 		clients[socket.id] = true;
 		socket.emit("game-state", gameState);
 		socket.on("poop-collected", ({ id }) => {
-			gameState.poopCollected += 1;
-			gameState.poops = gameState.poops.filter((poop) => poop.id !== id);
-			gameState.poops.push({
-				id: gameState.poops[gameState.poops.length - 1].id + 1,
-				location: getRandomLocation(),
-			});
-			hasUpdate = true;
+			const poopIndex = gameState.poops.findIndex((poop) => poop.id === id);
+			if (poopIndex !== -1) {
+				gameState.poops[poopIndex].location = getRandomLocation();
+				gameState.poopCollected += 1;
+				hasUpdate = true;
+			}
 		});
 		socket.on("disconnect", () => {
 			delete clients[socket.id];
