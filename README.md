@@ -14,15 +14,22 @@ A collaborative multiple player online game where YOU can be a 💩 hero by coll
 
 ### Tech-Stack
 
-Dependencies
+Server:
 
-- ExpressJS
-- Socket.io
-- morgan
+- Dependencies
 
-DevDependencies
+  - ExpressJS
+  - Socket.io
+  - morgan
 
-- nodemon
+- DevDependencies
+
+  - nodemon
+
+Client:
+
+- HTML/CSS
+- Javascript
 
 ### Plan Of Action
 
