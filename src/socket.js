@@ -81,6 +81,7 @@ module.exports = (server) => {
 
 	io.on("connection", (socket) => {
 		socket.on("poop-collected", ({ id }) => {
+			gameState.poopCollected += 1;
 			gameState.poops = gameState.poops.filter((poop) => poop.id !== id);
 			gameState.poops.push({
 				id: gameState.poops[gameState.poops.length - 1].id + 1,
