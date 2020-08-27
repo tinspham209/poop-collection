@@ -31,26 +31,38 @@ function collectPoop(poop) {
 	};
 }
 
+let firstRun = true;
 function updateView(gameState) {
 	scoreElement.textContent = gameState.poopCollected;
+	const poopIds = {};
 	gameState.poops.forEach((poop) => {
+		poopIds[poop.id] = true;
 		if (!poopsById[poop.id]) {
-			const poopsElement = document.createElement("span");
-			poopsElement.classList.add("emoji");
-			poopsElement.classList.add("poop");
-			poopsElement.textContent = "💩";
-			poopsById[poop.id] = poopsElement;
-			poopsElement.addEventListener("click", collectPoop(poop));
-			zoo.appendChild(poopsElement);
+			const poopElement = document.createElement("span");
+			poopElement.classList.add("emoji");
+			poopElement.classList.add("poop");
+			poopElement.textContent = "💩";
+			poopsById[poop.id] = poopElement;
+			poopElement.addEventListener("click", collectPoop(poop));
+			zoo.appendChild(poopElement);
 		}
 
-		poopsById[poop.id].style.top = poop.location.y * window.innerHeight + "px";
-		poopsById[poop.id].style.left = poop.location.x * window.innerWidth + "px";
+		poopsById[poop.id].style.top = `${poop.location.y * 100}vh`;
+		poopsById[poop.id].style.left = `${poop.location.x * 100}vw`;
+	});
+	Object.entries(poopsById).forEach(([id, poop]) => {
+		if (!poopIds[id]) {
+			removePoop(poop);
+		}
 	});
 
+	const animalsIds = {};
 	gameState.animals.forEach((animal) => {
-		if (!animalsById[animal.id]) {
-			const animalElement = document.createElement("span");
+		animalsIds[animal.id] = true;
+		let animalElement = animalsById[animal.id];
+
+		if (!animalElement) {
+			animalElement = document.createElement("span");
 			animalElement.classList.add("emoji");
 			animalElement.classList.add("animal");
 			animalElement.classList.add("bounce");
@@ -58,12 +70,29 @@ function updateView(gameState) {
 			animalsById[animal.id] = animalElement;
 			zoo.appendChild(animalElement);
 		}
-
-		animalsById[animal.id].style.top =
-			animal.location.y * window.innerHeight + "px";
-		animalsById[animal.id].style.left =
-			animal.location.x * window.innerWidth + "px";
+		if (animal.hasUpdate || firstRun) {
+			animalElement.style.top = `${animal.location.y * 100}vh`;
+			animalElement.style.left = `${animal.location.x * 100}vw`;
+		}
+		const duration = (animal.endTime - Date.now()) / 1000;
+		animalElement.style.transition = `all ${duration}s ease-in-out`;
+		const bounceDuration = 250 + Math.floor(Math.random() * 200);
+		let animationName = "bounce";
+		if (animal.nextLocation.x > animal.location.x) {
+			animationName = "flip-bounce";
+		}
+		animalElement.style.animation = `${animationName} ${bounceDuration}ms alternate ease-in-out infinite`;
+		setTimeout(() => {
+			animalElement.style.top = `${animal.nextLocation.y * 100}vh`;
+			animalElement.style.left = `${animal.nextLocation.x * 100}vw`;
+		}, 200);
 	});
+	Object.entries(animalsById).forEach(([id, animal]) => {
+		if (!animalsIds[id]) {
+			animal.remove();
+		}
+	});
+	firstRun = false;
 }
 
 socket.on("game-state", updateView);
