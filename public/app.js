@@ -1,6 +1,7 @@
 const socket = io();
 
 const zoo = document.querySelector(".zoo");
+const scoreElement = document.querySelector(".score .value");
 
 {
 	/* <span class="emoji animal bounce">🐅</span>
@@ -13,16 +14,18 @@ const poopsById = {};
 
 function collectPoop(poop) {
 	return () => {
-		socket.emit("collect-poop", {
+		socket.emit("poop-collected", {
 			id: poop.id,
 		});
 		if (poopsById[poop.id]) {
 			poopsById[poop.id].remove();
+			delete poopsById[poop.id];
 		}
 	};
 }
 
 function updateView(gameState) {
+	scoreElement.textContent = gameState.poopCollected;
 	gameState.poops.forEach((poop) => {
 		if (!poopsById[poop.id]) {
 			const poopsElement = document.createElement("span");
