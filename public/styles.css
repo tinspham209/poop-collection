@@ -37,6 +37,7 @@ body {
 
 .poop {
 	font-size: 5vmin;
+	cursor: pointer;
 }
 
 .bounce {
