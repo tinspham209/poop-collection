@@ -11,6 +11,17 @@ const zoo = document.querySelector(".zoo");
 const animalsById = {};
 const poopsById = {};
 
+function collectPoop(poop) {
+	return () => {
+		socket.emit("collect-poop", {
+			id: poop.id,
+		});
+		if (poopsById[poop.id]) {
+			poopsById[poop.id].remove();
+		}
+	};
+}
+
 function updateView(gameState) {
 	gameState.poops.forEach((poop) => {
 		if (!poopsById[poop.id]) {
@@ -19,6 +30,7 @@ function updateView(gameState) {
 			poopsElement.classList.add("poop");
 			poopsElement.textContent = "💩";
 			poopsById[poop.id] = poopsElement;
+			poopsElement.addEventListener("click", collectPoop(poop));
 			zoo.appendChild(poopsElement);
 		}
 
