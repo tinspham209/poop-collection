@@ -27,6 +27,7 @@ body {
 	text-shadow: 2px 2px black;
 
 	transform: translate(-50%, 50%);
+	user-select: none;
 
 	position: fixed;
 }
