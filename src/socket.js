@@ -11,6 +11,7 @@ module.exports = (server) => {
 	const io = SocketIO(server);
 
 	const gameState = {
+		poopCollected: 0,
 		animals: [
 			{
 				id: 0,
@@ -79,7 +80,13 @@ module.exports = (server) => {
 	};
 
 	io.on("connection", (socket) => {
-		console.log("a user connected");
+		socket.on("poop-collected", ({ id }) => {
+			gameState.poops = gameState.poops.filter((poop) => poop.id !== id);
+			gameState.poops.push({
+				id: gameState.poops[gameState.poops.length - 1].id + 1,
+				location: getRandomLocation(),
+			});
+		});
 	});
 
 	setInterval(() => {
