@@ -53,9 +53,10 @@ module.exports = (server) => {
 			}
 			const poopIndex = gameState.poops.findIndex((poop) => poop.id === id);
 			if (poopIndex !== -1) {
-				gameState.poops[poopIndex].location = getRandomLocation();
+				gameState.poops.splice(foundIndex, 1);
 				gameState.poopCollected += 1;
 				hasUpdate = true;
+				lastCollected = Date.now();
 			}
 		});
 		socket.on("disconnect", () => {
@@ -64,6 +65,34 @@ module.exports = (server) => {
 	});
 
 	setInterval(() => {
+		gameState.animals.forEach((animal) => {
+			const diff = animals.endTime - Date.now();
+			if (diff <= 0) {
+				const nextLocation = getRandomLocation();
+				gameState.poops.push(
+					createPoop({
+						y:
+							nextLocation.y > animal.nextLocation.y
+								? animal.nextLocation.y + 0.02
+								: animal.nextLocation.y - 0.02,
+						x:
+							nextLocation.x > animal.nextLocation.x
+								? animal.nextLocation.x + 0.02
+								: animal.nextLocation.x - 0.02,
+					})
+				);
+				if (gameState.poops.length > 40) {
+					gameState.poops.shift();
+				}
+				animal.location = animal.nextLocation;
+				animal.nextLocation = nextLocation;
+				animal.endTime = getRandomEndTime();
+				animal.hasUpdate = true;
+				hasUpdate = true;
+			} else {
+				animal.hasUpdate = false;
+			}
+		});
 		if (hasUpdate) {
 			io.emit("game-state", gameState);
 			hasUpdate = false;
