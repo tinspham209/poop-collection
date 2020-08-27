@@ -79,8 +79,21 @@ Next Steps:
 
 ```
 .
-├──
-└──
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── README.md
+├── public
+    ├── fonts
+        └── fonts.css
+    ├── images
+        └── fence.png
+    ├── app.js
+    ├── index.html
+    └── styles.css
+└── src
+    ├── index.js
+    └── socket.js
 ```
 
 ### Set up
