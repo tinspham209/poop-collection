@@ -1,4 +1,5 @@
 const SocketIO = require("socket.io");
+const crypto = require("crypto");
 
 function getRandomLocation() {
 	return {
@@ -12,7 +13,7 @@ function createID() {
 }
 
 function getRandomEndTime() {
-	return Date.now() + (5 + Math.floor(Mat.random() * 5)) * 1000;
+	return Date.now() + (5 + Math.floor(Math.random() * 5)) * 1000;
 }
 
 function createAnimal(emoji) {
@@ -45,7 +46,7 @@ module.exports = (server) => {
 	io.on("connection", (socket) => {
 		console.log("Connected clients: ", Object.keys(clients).length);
 		clients[socket.id] = true;
-		const lastCollected = Date.now();
+		let lastCollected = Date.now();
 		socket.emit("game-state", gameState);
 		socket.on("poop-collected", ({ id }) => {
 			if (Date.now() - lastCollected < 1000) {
@@ -53,7 +54,7 @@ module.exports = (server) => {
 			}
 			const poopIndex = gameState.poops.findIndex((poop) => poop.id === id);
 			if (poopIndex !== -1) {
-				gameState.poops.splice(foundIndex, 1);
+				gameState.poops.splice(poopIndex, 1);
 				gameState.poopCollected += 1;
 				hasUpdate = true;
 				lastCollected = Date.now();
@@ -66,7 +67,7 @@ module.exports = (server) => {
 
 	setInterval(() => {
 		gameState.animals.forEach((animal) => {
-			const diff = animals.endTime - Date.now();
+			const diff = animal.endTime - Date.now();
 			if (diff <= 0) {
 				const nextLocation = getRandomLocation();
 				gameState.poops.push(
