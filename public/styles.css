@@ -33,15 +33,38 @@ body {
 
 .animal {
 	font-size: 13vmin;
+	pointer-events: none;
+	z-index: 10;
 }
 
 .poop {
+	opacity: 0.8;
 	font-size: 5vmin;
 	cursor: pointer;
+	z-index: 2;
+	animation: grow 1s forwards;
 }
 
-.bounce {
-	animation: bounce 300ms alternate ease-in-out infinite;
+.poop.shrink {
+	animation: shrink 1s forwards;
+}
+
+@keyframes grow {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes shrink {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(0);
+	}
 }
 
 /* Fence */
@@ -52,6 +75,7 @@ body {
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	pointer-events: none;
 }
 
 .fence img {
@@ -78,9 +102,10 @@ body {
 	right: 4vw;
 	font-size: 4vw;
 	z-index: 9999;
+	pointer-events: none;
 }
 
-.value {
+.score .value {
 	color: var(--title-color);
 }
 
