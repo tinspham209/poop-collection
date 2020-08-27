@@ -7,76 +7,38 @@ function getRandomLocation() {
 	};
 }
 
+function createID() {
+	return `id_${Date.now()}_${crypto.randomBytes(5).toString("hex")}`;
+}
+
+function getRandomEndTime() {
+	return Date.now() + (5 + Math.floor(Mat.random() * 5)) * 1000;
+}
+
+function createAnimal(emoji) {
+	return {
+		id: createID(),
+		emoji,
+		location: getRandomLocation(),
+		nextLocation: getRandomLocation(),
+		endTime: getRandomEndTime(),
+	};
+}
+
+function createPoop(location) {
+	return {
+		id: createID(),
+		location,
+	};
+}
+
 module.exports = (server) => {
 	const io = SocketIO(server);
 	const clients = {};
 	const gameState = {
 		poopCollected: 0,
-		animals: [
-			{
-				id: 0,
-				emoji: "🐅",
-				location: getRandomLocation(),
-			},
-			{
-				id: 1,
-				emoji: "🐘",
-				location: getRandomLocation(),
-			},
-			{
-				id: 2,
-				emoji: "🐎",
-				location: getRandomLocation(),
-			},
-			{
-				id: 3,
-				emoji: "🐧",
-				location: getRandomLocation(),
-			},
-			{
-				id: 4,
-				emoji: "🐿",
-				location: getRandomLocation(),
-			},
-		],
-		poops: [
-			{
-				id: 0,
-				location: getRandomLocation(),
-			},
-			{
-				id: 1,
-				location: getRandomLocation(),
-			},
-			{
-				id: 2,
-				location: getRandomLocation(),
-			},
-			{
-				id: 3,
-				location: getRandomLocation(),
-			},
-			{
-				id: 4,
-				location: getRandomLocation(),
-			},
-			{
-				id: 5,
-				location: getRandomLocation(),
-			},
-			{
-				id: 6,
-				location: getRandomLocation(),
-			},
-			{
-				id: 7,
-				location: getRandomLocation(),
-			},
-			{
-				id: 8,
-				location: getRandomLocation(),
-			},
-		],
+		animals: ["🐅", "🐘", "🐎", "🐧", "🐪"].map(createAnimal),
+		poops: [],
 	};
 
 	let hasUpdate = false;
