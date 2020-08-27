@@ -1,5 +1,12 @@
 const SocketIO = require("socket.io");
 
+function getRandomLocation() {
+	return {
+		x: Math.random(),
+		y: Math.random() * 0.8,
+	};
+}
+
 module.exports = (server) => {
 	const io = SocketIO(server);
 
@@ -8,89 +15,65 @@ module.exports = (server) => {
 			{
 				id: 0,
 				emoji: "🐅",
-				location: {
-					x: Math.random(),
-					y: Math.random(),
-				},
+				location: getRandomLocation(),
 			},
 			{
 				id: 1,
 				emoji: "🐘",
-				location: {
-					x: Math.random(),
-					y: Math.random(),
-				},
+				location: getRandomLocation(),
 			},
 			{
 				id: 2,
 				emoji: "🐎",
-				location: {
-					x: Math.random(),
-					y: Math.random(),
-				},
+				location: getRandomLocation(),
 			},
 			{
 				id: 3,
 				emoji: "🐧",
-				location: {
-					x: Math.random(),
-					y: Math.random(),
-				},
+				location: getRandomLocation(),
 			},
 			{
 				id: 4,
 				emoji: "🐿",
-				location: {
-					x: Math.random(),
-					y: Math.random(),
-				},
+				location: getRandomLocation(),
 			},
 		],
 		poops: [
 			{
 				id: 0,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 1,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 2,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 3,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 4,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 5,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 6,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 7,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 			{
 				id: 8,
-				x: Math.random(),
-				y: Math.random(),
+				location: getRandomLocation(),
 			},
 		],
 	};
